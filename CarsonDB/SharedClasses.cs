@@ -1,0 +1,142 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarsonDB
+{
+	public enum AVImarkDataType
+	{
+		AVImarkAutoNumber,
+		AVImarkCharacter,
+		AVImarkDynamicString,
+		AVImarkDate,
+		AVImarkTime,
+		AVImarkSingle,
+		AVImarkDouble,
+		AVImarkWord,
+		AVImarkDoubleWord,
+		AVImarkByte,
+		AVImarkBit,
+		AVImarkBool,
+		AVImarkInteger,
+		AVImarkImpliedDecimal,
+		AVImarkImpliedDecimal2,
+		AVImarkSignedImpliedDecimal,
+		AVImarkLongInteger,
+		AVImarkLinkToPhrase,
+		AVImarkLinkToWp
+	}
+
+	public class Definition
+	{
+		public string FieldName;
+		public Enum FieldOrdinal;
+		public AVImarkDataType FieldType;
+	}
+
+	public enum ComparisonType
+	{
+		EqualTo,
+		GreaterThan,
+		GreaterThanEqual,
+		LessThan,
+		LessThanEqual,
+		NotEqualTo,
+		Contains
+	}
+
+	public enum RecordStatus
+	{
+		Added,
+		Modified,
+		None,
+		Error
+	}
+
+	public enum TableInstance
+	{
+		Account,
+		Animal,
+		Appointment,
+		Attach,
+		Audit,
+		Client,
+		Diagnose,
+		Entry,
+		Follow,
+		Item,
+		Lab,
+		PurchaseOrder,
+		Price,
+		Problem,
+		Quotail,
+		Quote,
+		Reminder,
+		Service,
+		Split,
+		Table,
+		Test,
+		Treatment,
+		User
+	}
+
+	public interface ICrc
+	{
+		[System.ComponentModel.DefaultValue(RecordStatus.None)]
+		RecordStatus RecordState
+		{
+			get;
+			set;
+		}
+	}
+
+	public static class ExtensionMethods
+	{
+		public static ICrc GetTableInstance(TableInstance tableInstance, CarsonBackend instance, int recordNumber)
+		{
+			switch (tableInstance)
+			{
+				case TableInstance.Account:
+					return new Account.AccountData((Account)instance, recordNumber);
+
+				case TableInstance.Animal:
+					return new Animal.AnimalData((Animal)instance, recordNumber);
+
+				case TableInstance.Appointment:
+					return new Appointment.AppointmentData((Appointment)instance, recordNumber);
+
+				case TableInstance.Attach:
+					return new Attachment.AttachmentData((Attachment)instance, recordNumber);
+
+				case TableInstance.Audit:
+					return new Audit.AuditData((Audit)instance, recordNumber);
+
+				case TableInstance.Client:
+					return new Client.ClientData((Client)instance, recordNumber);
+
+				case TableInstance.Follow:
+					return new Follow.FollowData((Follow)instance, recordNumber);
+
+				case TableInstance.Lab:
+					return new Lab.LabData((Lab)instance, recordNumber);
+
+				case TableInstance.PurchaseOrder:
+					return new PurchaseOrder.PurchaseOrderData((PurchaseOrder)instance, recordNumber);
+
+				case TableInstance.Price:
+					return new Price.PriceData((Price)instance, recordNumber);
+
+				case TableInstance.Service:
+					return new Service.ServiceData((Service)instance, recordNumber);
+
+				default:
+					return null;
+			}
+		}
+	}
+}

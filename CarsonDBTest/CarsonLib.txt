@@ -1,0 +1,18 @@
+﻿CarsonLib Veterinary Extraction Library
+Copyright ©2018 GST Computing, LLC. All Rights Reserved.
+
+CarsonLib.DLL is free for use in any environment, including but not necessarily limited to: personal, academic, commercial, government, business, non-profit, and for-profit. "Free" in the preceding sentence means that there is no cost or charge associated with the use of CarsonLib.DLL.  
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software (the "Software"), to use the Software without restriction, including the rights to use, copy, publish, and distribute the Software, and to permit persons to whom the Software is furnished to do so.
+
+You may not modify, adapt, rent, lease, loan, sell, or create derivative works based upon the Software or any part thereof.  For the purposes of this license, a derivate work is a software package, library, or program with similar functionality to this library or would be in direct competition with the functionality of this library or API therein.
+This notice must be included in the same directory as the CarsonLib.DLL library file.
+The Copyright notice below should be included in the “About Dialog” of any software program and/or any documentation that accompanies any program that utilizes CarsonLib.DLL.
+
+CarsonLib Veterinary Extraction Library 
+Copyright ©2018 GST Computing, LLC. All Rights Reserved.
+For more information, visit CheetahBase.com.
+
+The laws of the state of Oklahoma, USA, govern this software license.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
