@@ -148,15 +148,5 @@ namespace CarsonDB
 				return "";
 			}
 		}
-
-		public void SetPhraseLink(SafeFileHandle fileHandle)
-		{
-			_carsonLib.DatabaseHandles.Phrase = fileHandle;
-		}
-
-		public void SetWpLink(SafeFileHandle fileHandle)
-		{
-			_carsonLib.DatabaseHandles.Wp = fileHandle;
-		}
 	}
 }

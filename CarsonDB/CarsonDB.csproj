@@ -54,9 +54,6 @@
     <Compile Include="Audit.cs" />
     <Compile Include="CarsonBackend.cs" />
     <Compile Include="CarsonCRC.cs" />
-    <Compile Include="CarsonDataAdapter.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="CarsonException.cs" />
     <Compile Include="CarsonLibDll.cs" />
     <Compile Include="CarsonReader.cs" />

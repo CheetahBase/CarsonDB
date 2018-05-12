@@ -96,7 +96,11 @@ namespace CarsonDB
 		public void Dispose()
 		{
 			Close();
-			_carsonLib.Dispose();
+
+			if (_carsonLib != null)
+			{
+				_carsonLib.Dispose();
+			}
 		}
 
 		/// <summary>
@@ -280,8 +284,7 @@ namespace CarsonDB
 				throw new MissingFieldException();
 			}
 
-			if (databaseDefinition.FieldType == AVImarkDataType.AVImarkDouble || databaseDefinition.FieldType == AVImarkDataType.AVImarkAutoNumber ||
-				databaseDefinition.FieldType == AVImarkDataType.AVImarkBool || databaseDefinition.FieldType == AVImarkDataType.AVImarkBit) 
+			if (databaseDefinition.FieldType == AVImarkDataType.AVImarkDouble || databaseDefinition.FieldType == AVImarkDataType.AVImarkBool || databaseDefinition.FieldType == AVImarkDataType.AVImarkBit) 
 			{
 				throw new Exception(databaseDefinition.FieldType.ToString() + " cannot be added as a filter.");
 			}
@@ -981,6 +984,11 @@ namespace CarsonDB
 			DatabaseDefinition.Add(databaseDefinition);
 		}
 
+		/// <summary>
+		/// Find the Field's Definition by the Field Name
+		/// </summary>
+		/// <param name="fieldName">The field to find the definition for.</param>
+		/// <returns>Returns null if no item found</returns>
 		public Definition FindFieldDefinition(string fieldName)
 		{
 			fieldName = fieldName.Trim().ToUpper();
@@ -996,11 +1004,20 @@ namespace CarsonDB
 			return null;
 		}
 
+		/// <summary>
+		/// Informs as to whether or not this version of AVImark uses the classic database format instead of the modern format.
+		/// </summary>
+		/// <returns>If it is the classic database format, return true</returns>
 		public bool IsClassic()
 		{
 			return _isClassic;
 		}
 
+		/// <summary>
+		/// Creates a CRC difference file based on a list of fields passed.
+		/// </summary>
+		/// <param name="fileName">The full path of the file name to create.</param>
+		/// <param name="dataFields">A list of strings that contain names of the fields</param>
 		public void CreateTableCRC(string fileName, List<string> dataFields)
 		{
 			bool alreadyOpen = true;
@@ -1021,6 +1038,13 @@ namespace CarsonDB
 			}
 		}
 
+		/// <summary>
+		/// Finds the records changed since the last CRC file snapshot
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="fileName">The full path of the CRC file to compare against</param>
+		/// <param name="dataToReturn">The type of data to return (new records, modified records, or both)</param>
+		/// <returns></returns>
 		public List<T> FindChangedRecords<T>(string fileName, DifferentialData dataToReturn)
 		{
 			List<ICrc> tableList = new List<ICrc>();
@@ -1071,16 +1095,34 @@ namespace CarsonDB
 			return tableList.ConvertAll(x => (T)x);
 		}
 
+		/// <summary>
+		/// Automatically retrieves all record since the last snapshot.  If no prior snapshot exists, it will create one and return all records as "Added".
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns>All changed and modified records since the last snapshot</returns>
 		public List<T> RecordsChangedSinceLastSnapshot<T>()
 		{
 			return RecordsChangedSinceLastSnapshot<T>(string.Empty);
 		}
 
+		/// <summary>
+		/// Automatically retrieves all record since the last snapshot based off a list of fields passed in.  If no prior snapshot exists, it will create one and return all records as "Added".
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dataFields">A list of strings that contain names of the fields</param>
+		/// <returns></returns>
 		public List<T> RecordsChangedSinceLastSnapshot<T>(List<string> dataFields)
 		{
 			return RecordsChangedSinceLastSnapshot<T>(dataFields, string.Empty);
 		}
 
+		/// <summary>
+		/// Automatically retrieves all record since the last snapshot based off a list of fields passed in and with a file path override.  If no prior snapshot exists, it will create one and return all records as "Added".
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dataFields">A list of strings that contain names of the fields</param>
+		/// <param name="filePath">The path of where to store the CRC files</param>
+		/// <returns></returns>
 		public List<T> RecordsChangedSinceLastSnapshot<T>(List<string> dataFields, string filePath)
 		{
 			Type parentClass = this.GetType();
@@ -1108,6 +1150,12 @@ namespace CarsonDB
 			return records.ConvertAll(x => x);
 		}
 
+		/// <summary>
+		/// Automatically retrieves all record since the last snapshot with a file path override.  If no prior snapshot exists, it will create one and return all records as "Added".
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="filePath">The path of where to store the CRC files</param>
+		/// <returns></returns>
 		public List<T> RecordsChangedSinceLastSnapshot<T>(string filePath)
 		{
 			Type parentClass = typeof(T).DeclaringType;
@@ -1153,16 +1201,16 @@ namespace CarsonDB
 			return fieldNames;
 		}
 
-		public T GetAttribute<T>(string attributeName)
-		{
-			return (T)GetType().GetField(attributeName).GetValue(this);
-		}
-
 		private bool CalculateBit(byte byteValue, int bitNumber)
 		{
 			return (byteValue & (1 << bitNumber)) != 0;
 		}
 
+		/// <summary>
+		/// Rerieves a Database Definition based on an enumeration value.
+		/// </summary>
+		/// <param name="definition">The enum containing the defiition</param>
+		/// <returns></returns>
 		protected Definition LoadDatabaseDefinition(Enum definition)
 		{
 			return DatabaseDefinition[Convert.ToInt32(definition)];
