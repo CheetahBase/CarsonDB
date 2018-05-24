@@ -111,7 +111,7 @@ namespace CarsonDB
 			{
 				get
 				{
-					return _price.ImpliedDecimalFieldValue(PriceFieldOrdinals.PriceFrom, _recordNumber);
+					return _price.SignedImpliedDecimalFieldValue(PriceFieldOrdinals.PriceFrom, _recordNumber);
 				}
 			}
 
@@ -119,7 +119,7 @@ namespace CarsonDB
 			{
 				get
 				{
-					return _price.ImpliedDecimalFieldValue(PriceFieldOrdinals.PriceTo, _recordNumber);
+					return _price.SignedImpliedDecimalFieldValue(PriceFieldOrdinals.PriceTo, _recordNumber);
 				}
 			}
 
@@ -171,8 +171,8 @@ namespace CarsonDB
 			this.AddFieldDefinition(PriceFields.PriceCode, PriceFieldOrdinals.PriceCode, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(PriceFields.PriceDate, PriceFieldOrdinals.PriceDate, AVImarkDataType.AVImarkDate);
 			this.AddFieldDefinition(PriceFields.PriceTod, PriceFieldOrdinals.PriceTod, AVImarkDataType.AVImarkTime);
-			this.AddFieldDefinition(PriceFields.PriceFrom, PriceFieldOrdinals.PriceFrom, AVImarkDataType.AVImarkImpliedDecimal);
-			this.AddFieldDefinition(PriceFields.PriceTo, PriceFieldOrdinals.PriceTo, AVImarkDataType.AVImarkImpliedDecimal);
+			this.AddFieldDefinition(PriceFields.PriceFrom, PriceFieldOrdinals.PriceFrom, AVImarkDataType.AVImarkSignedImpliedDecimal);
+			this.AddFieldDefinition(PriceFields.PriceTo, PriceFieldOrdinals.PriceTo, AVImarkDataType.AVImarkSignedImpliedDecimal);
 			this.AddFieldDefinition(PriceFields.PriceSetBy, PriceFieldOrdinals.PriceSetBy, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(PriceFields.PriceAction, PriceFieldOrdinals.PriceAction, AVImarkDataType.AVImarkByte);
 		}
