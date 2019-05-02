@@ -33,7 +33,6 @@ namespace CarsonDB
 			public const string PurchaseOrderQuantity = "PO_QUANTITY";
 			public const string PurchaseOrderRecd = "PO_RECD";
 			public const string PurchaseOrderCode = "PO_CODE";
-			public const string PurchaseOrderTax = "PO_TAX";
 			public const string PurchaseOrderVendor = "PO_VENDOR";
 			public const string PurchaseOrderCost = "PO_COST";
 			public const string PurchaseOrderPack = "PO_PACK";

@@ -240,8 +240,8 @@ namespace CarsonDB
 			this.AddFieldDefinition(AccountFields.AccountType, AccountFieldOrdinals.AccountType, AVImarkDataType.AVImarkCharacter);
 			this.AddFieldDefinition(AccountFields.AccountDoctor, AccountFieldOrdinals.AccountDoctor, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(AccountFields.AccountDescription, AccountFieldOrdinals.AccountDescription, AVImarkDataType.AVImarkDynamicString);
-			this.AddFieldDefinition(AccountFields.AccountTranstax, AccountFieldOrdinals.AccountTranstax, AVImarkDataType.AVImarkSingle);
-			this.AddFieldDefinition(AccountFields.AccountTranltax, AccountFieldOrdinals.AccountTranltax, AVImarkDataType.AVImarkSingle);
+			this.AddFieldDefinition(AccountFields.AccountTranstax, AccountFieldOrdinals.AccountTranstax, AVImarkDataType.AVImarkSingle, 0.01m);
+			this.AddFieldDefinition(AccountFields.AccountTranltax, AccountFieldOrdinals.AccountTranltax, AVImarkDataType.AVImarkSingle, 0.01m);
 			this.AddFieldDefinition(AccountFields.AccountInvno, AccountFieldOrdinals.AccountInvno, AVImarkDataType.AVImarkDoubleWord);
 			this.AddFieldDefinition(AccountFields.AccountQty, AccountFieldOrdinals.AccountQty, AVImarkDataType.AVImarkImpliedDecimal);
 			this.AddFieldDefinition(AccountFields.AccountAmount, AccountFieldOrdinals.AccountAmount, AVImarkDataType.AVImarkSignedImpliedDecimal);

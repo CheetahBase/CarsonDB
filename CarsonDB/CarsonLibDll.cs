@@ -44,6 +44,12 @@ namespace CarsonDB
 		private delegate int RecordCountFromHandleDelegate(IntPtr recordHandle);
 		private delegate int RecordCountDelegate(SafeFileHandle fileHandle, TableInstance table, bool isClassic);
 
+		private delegate IntPtr RecordSearchByte2Delegate(DatabaseHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, ref byte pointerValueFrom, ref byte pointerValueTo, TableInstance table, int fieldOrdinal, int fieldLength, bool isNot);
+		private delegate IntPtr RecordSearchFloat2Delegate(DatabaseHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, ref float pointerValueFrom, ref float pointerValueTo, TableInstance table, int fieldOrdinal, int fieldLength, bool isNot);
+		private delegate IntPtr RecordSearchInt2Delegate(DatabaseHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, ref int pointerValueFrom, ref int pointerValueTo, TableInstance table, int fieldOrdinal, int fieldLength, bool isNot);
+		private delegate IntPtr RecordSearchString2Delegate(DatabaseHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, StringBuilder pointerValue, int comparisonType, TableInstance table, int fieldOrdinal, int fieldLength, bool isNot);
+		private delegate IntPtr RecordSearchWord2Delegate(DatabaseHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, ref ushort pointerValueFrom, ref ushort pointerValueTo, TableInstance table, int fieldOrdinal, int fieldLength, bool isNot);
+
 		private delegate int ReadFieldValueCharacterDelegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref char dataPointer, AVImarkDataType dataType, bool isClassic);
 		private delegate int ReadFieldValueStringDelegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, StringBuilder dataPointer, AVImarkDataType dataType, bool isClassic);
 		private delegate int ReadFieldValueDoubleWordDelegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref int dataPointer, AVImarkDataType dataType, bool isClassic);
@@ -52,6 +58,15 @@ namespace CarsonDB
 		private delegate int ReadFieldValueLongDelegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref UInt32 datePointer, AVImarkDataType dataType, bool isClassic);
 		private delegate int ReadFieldValueWordDelegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref UInt16 datePointer, AVImarkDataType dataType, bool isClassic);
 		private delegate int ReadFieldValueByteDelegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref byte bytePointer, AVImarkDataType dataType, bool isClassic);
+
+		private delegate int ReadFieldValueCharacter2Delegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref char dataPointer, AVImarkDataType dataType, int fieldLength);
+		private delegate int ReadFieldValueString2Delegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, StringBuilder dataPointer, AVImarkDataType dataType, int fieldLength);
+		private delegate int ReadFieldValueDoubleWord2Delegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref int dataPointer, AVImarkDataType dataType, int fieldLength);
+		private delegate int ReadFieldValueFloat2Delegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref float dataPointer, AVImarkDataType dataType, int fieldLength);
+		private delegate int ReadFieldValueDate2Delegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref ushort datePointer, AVImarkDataType dataType, int fieldLength);
+		private delegate int ReadFieldValueLong2Delegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref UInt32 datePointer, AVImarkDataType dataType, int fieldLength);
+		private delegate int ReadFieldValueWord2Delegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref UInt16 datePointer, AVImarkDataType dataType, int fieldLength);
+		private delegate int ReadFieldValueByte2Delegate(DatabaseHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref byte bytePointer, AVImarkDataType dataType, int fieldLength);
 
 		private delegate IntPtr ComputeCompareCRCDelegate(SafeFileHandle fileHandleMain, SafeFileHandle fileHandleCrc, int table, ref int fieldDataPtr, int fieldDataLength, CarsonCRC.CrcFunction action, int padding, bool isClassic);
 
@@ -65,6 +80,12 @@ namespace CarsonDB
 		private RecordCountFromHandleDelegate _recordCountFromHandle;
 		private RecordCountDelegate _recordCount;
 
+		private RecordSearchInt2Delegate _recordSearchInt2;
+		private RecordSearchString2Delegate _recordSearchString2;
+		private RecordSearchFloat2Delegate _recordSearchFloat2;
+		private RecordSearchWord2Delegate _recordSearchWord2;
+		private RecordSearchByte2Delegate _recordSearchByte2;
+
 		private ReadFieldValueCharacterDelegate _readFieldValueCharacter;
 		private ReadFieldValueStringDelegate _readFieldValueString;
 		private ReadFieldValueDoubleWordDelegate _readFieldValueDoubleWord;
@@ -73,6 +94,15 @@ namespace CarsonDB
 		private ReadFieldValueLongDelegate _readFieldValueLong;
 		private ReadFieldValueWordDelegate _readFieldValueWord;
 		private ReadFieldValueByteDelegate _readFieldValueByte;
+
+		private ReadFieldValueCharacter2Delegate _readFieldValueCharacter2;
+		private ReadFieldValueString2Delegate _readFieldValueString2;
+		private ReadFieldValueDoubleWord2Delegate _readFieldValueDoubleWord2;
+		private ReadFieldValueFloat2Delegate _readFieldValueFloat2;
+		private ReadFieldValueDate2Delegate _readFieldValueDate2;
+		private ReadFieldValueLong2Delegate _readFieldValueLong2;
+		private ReadFieldValueWord2Delegate _readFieldValueWord2;
+		private ReadFieldValueByte2Delegate _readFieldValueByte2;
 
 		private ComputeCompareCRCDelegate _computeCompareCrc;
 
@@ -99,6 +129,12 @@ namespace CarsonDB
 			_recordCountFromHandle = (RecordCountFromHandleDelegate)Load<RecordCountFromHandleDelegate>("RecordCountFromHandle");
 			_recordCount = (RecordCountDelegate)Load<RecordCountDelegate>("RecordCount");
 
+			_recordSearchInt2 = (RecordSearchInt2Delegate)Load<RecordSearchInt2Delegate>("RecordSearch");
+			_recordSearchString2 = (RecordSearchString2Delegate)Load<RecordSearchString2Delegate>("RecordSearch");
+			_recordSearchFloat2 = (RecordSearchFloat2Delegate)Load<RecordSearchFloat2Delegate>("RecordSearch");
+			_recordSearchWord2 = (RecordSearchWord2Delegate)Load<RecordSearchWord2Delegate>("RecordSearch");
+			_recordSearchByte2 = (RecordSearchByte2Delegate)Load<RecordSearchByte2Delegate>("RecordSearch");
+
 			_readFieldValueCharacter = (ReadFieldValueCharacterDelegate)Load<ReadFieldValueCharacterDelegate>("ReadFieldValue");
 			_readFieldValueString = (ReadFieldValueStringDelegate)Load<ReadFieldValueStringDelegate>("ReadFieldValue");
 			_readFieldValueDoubleWord = (ReadFieldValueDoubleWordDelegate)Load<ReadFieldValueDoubleWordDelegate>("ReadFieldValue");
@@ -107,6 +143,15 @@ namespace CarsonDB
 			_readFieldValueLong = (ReadFieldValueLongDelegate)Load<ReadFieldValueLongDelegate>("ReadFieldValue");
 			_readFieldValueWord = (ReadFieldValueWordDelegate)Load<ReadFieldValueWordDelegate>("ReadFieldValue");
 			_readFieldValueByte = (ReadFieldValueByteDelegate)Load<ReadFieldValueByteDelegate>("ReadFieldValue");
+
+			_readFieldValueCharacter2 = (ReadFieldValueCharacter2Delegate)Load<ReadFieldValueCharacter2Delegate>("ReadFieldValue");
+			_readFieldValueString2 = (ReadFieldValueString2Delegate)Load<ReadFieldValueString2Delegate>("ReadFieldValue");
+			_readFieldValueDoubleWord2 = (ReadFieldValueDoubleWord2Delegate)Load<ReadFieldValueDoubleWord2Delegate>("ReadFieldValue");
+			_readFieldValueFloat2 = (ReadFieldValueFloat2Delegate)Load<ReadFieldValueFloat2Delegate>("ReadFieldValue");
+			_readFieldValueDate2 = (ReadFieldValueDate2Delegate)Load<ReadFieldValueDate2Delegate>("ReadFieldValue");
+			_readFieldValueLong2 = (ReadFieldValueLong2Delegate)Load<ReadFieldValueLong2Delegate>("ReadFieldValue");
+			_readFieldValueWord2 = (ReadFieldValueWord2Delegate)Load<ReadFieldValueWord2Delegate>("ReadFieldValue");
+			_readFieldValueByte2 = (ReadFieldValueByte2Delegate)Load<ReadFieldValueByte2Delegate>("ReadFieldValue");
 
 			_computeCompareCrc = (ComputeCompareCRCDelegate)Load<ComputeCompareCRCDelegate>("ComputeCompareCRC");
 		}
@@ -152,6 +197,12 @@ namespace CarsonDB
 				_recordCountFromHandle = null;
 				_recordCount = null;
 
+				_recordSearchInt2 = null;
+				_recordSearchString2 = null;
+				_recordSearchFloat2 = null;
+				_recordSearchWord2 = null;
+				_recordSearchByte2 = null;
+
 				_readFieldValueCharacter = null;
 				_readFieldValueString = null;
 				_readFieldValueDoubleWord = null;
@@ -160,8 +211,15 @@ namespace CarsonDB
 				_readFieldValueLong = null;
 				_readFieldValueWord = null;
 				_readFieldValueByte = null;
-				//_setLinkFilePhrase = null;
-				//_setLinkFileWp = null;
+
+				_readFieldValueCharacter2 = null;
+				_readFieldValueString2 = null;
+				_readFieldValueDoubleWord2 = null;
+				_readFieldValueFloat2 = null;
+				_readFieldValueDate2 = null;
+				_readFieldValueLong2 = null;
+				_readFieldValueWord2 = null;
+				_readFieldValueByte2 = null;
 
 				_computeCompareCrc = null;
 			}
@@ -191,6 +249,15 @@ namespace CarsonDB
 			}
 		}
 
+		public IntPtr RecordSearchInteger(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, int pointerValueFrom, int pointerValueTo, TableInstance table, int? fieldOffset, int fieldLength, bool isNot)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _recordSearchInt2(DatabaseHandles, recordType, memoryPtr, maximumRecords, ref pointerValueFrom, ref pointerValueTo, table, (int)fieldOffset, fieldLength, isNot);
+			}
+		}
+
 		public IntPtr RecordSearchString(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, StringBuilder pointerValue, int comparisonType, TableInstance table, Enum fieldOrdinal, bool isClassic, bool isNot)
 		{
 			lock (_singleThread)
@@ -199,6 +266,16 @@ namespace CarsonDB
 				return _recordSearchString(DatabaseHandles, recordType, memoryPtr, maximumRecords, pointerValue, comparisonType, table, Convert.ToInt32(fieldOrdinal), isClassic, isNot);
 			}
 		}
+
+		public IntPtr RecordSearchString(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, StringBuilder pointerValue, int comparisonType, TableInstance table, int? fieldOffset, int fieldLength, bool isNot)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _recordSearchString2(DatabaseHandles, recordType, memoryPtr, maximumRecords, pointerValue, comparisonType, table, (int)fieldOffset, fieldLength, isNot);
+			}
+		}
+
 		public IntPtr RecordSearchFloat(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, float pointerValueFrom, float pointerValueTo, TableInstance table, Enum fieldOrdinal, bool isClassic, bool isNot)
 		{
 			lock (_singleThread)
@@ -207,6 +284,16 @@ namespace CarsonDB
 				return _recordSearchFloat(DatabaseHandles, recordType, memoryPtr, maximumRecords, ref pointerValueFrom, ref pointerValueTo, table, Convert.ToInt32(fieldOrdinal), isClassic, isNot);
 			}
 		}
+
+		public IntPtr RecordSearchFloat(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, float pointerValueFrom, float pointerValueTo, TableInstance table, int? fieldOffset, int fieldLength, bool isNot)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _recordSearchFloat2(DatabaseHandles, recordType, memoryPtr, maximumRecords, ref pointerValueFrom, ref pointerValueTo, table, (int)fieldOffset, fieldLength, isNot);
+			}
+		}
+
 		public IntPtr RecordSearchWord(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, ushort pointerValueFrom, ushort pointerValueTo, TableInstance table, Enum fieldOrdinal, bool isClassic, bool isNot)
 		{
 			lock (_singleThread)
@@ -215,12 +302,31 @@ namespace CarsonDB
 				return _recordSearchWord(DatabaseHandles, recordType, memoryPtr, maximumRecords, ref pointerValueFrom, ref pointerValueTo, table, Convert.ToInt32(fieldOrdinal), isClassic, isNot);
 			}
 		}
+
+		public IntPtr RecordSearchWord(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, ushort pointerValueFrom, ushort pointerValueTo, TableInstance table, int? fieldOffset, int fieldLength, bool isNot)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _recordSearchWord2(DatabaseHandles, recordType, memoryPtr, maximumRecords, ref pointerValueFrom, ref pointerValueTo, table, (int)fieldOffset, fieldLength, isNot);
+			}
+		}
+
 		public IntPtr RecordSearchByte(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, byte pointerValueFrom, byte pointerValueTo, TableInstance table, Enum fieldOrdinal, bool isClassic, bool isNot)
 		{
 			lock (_singleThread)
 			{
 				DatabaseHandles.Main = fileHandle;
 				return _recordSearchByte(DatabaseHandles, recordType, memoryPtr, maximumRecords, ref pointerValueFrom, ref pointerValueTo, table, Convert.ToInt32(fieldOrdinal), isClassic, isNot);
+			}
+		}
+
+		public IntPtr RecordSearchByte(SafeFileHandle fileHandle, int recordType, IntPtr memoryPtr, int maximumRecords, byte pointerValueFrom, byte pointerValueTo, TableInstance table, int? fieldOffset, int fieldLength, bool isNot)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _recordSearchByte2(DatabaseHandles, recordType, memoryPtr, maximumRecords, ref pointerValueFrom, ref pointerValueTo, table, (int)fieldOffset, fieldLength, isNot);
 			}
 		}
 
@@ -240,12 +346,29 @@ namespace CarsonDB
 			}
 		}
 
+		public int RecordCount(FileStream fileStream, int? recordLength)
+		{
+			lock (_singleThread)
+			{
+				return ((int)fileStream.Length / (int)recordLength);
+			}
+		}
+
 		public int ReadFieldValueCharacter(SafeFileHandle fileHandle, TableInstance table, Enum fieldOrdinal, int recordNumber, ref char dataPointer, AVImarkDataType dataType, bool isClassic)
 		{
 			lock (_singleThread)
 			{
 				DatabaseHandles.Main = fileHandle;
 				return _readFieldValueCharacter(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, isClassic);
+			}
+		}
+
+		public int ReadFieldValueCharacter(SafeFileHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref char dataPointer, AVImarkDataType dataType, int? fieldLength)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _readFieldValueCharacter2(DatabaseHandles, table, fieldOrdinal, recordNumber, ref dataPointer, dataType, (int)fieldLength);
 			}
 		}
 
@@ -258,12 +381,30 @@ namespace CarsonDB
 			}
 		}
 
+		public int ReadFieldValueString(SafeFileHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, StringBuilder dataPointer, AVImarkDataType dataType, int? fieldLength)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _readFieldValueString2(DatabaseHandles, table, fieldOrdinal, recordNumber, dataPointer, dataType, (int)fieldLength);
+			}
+		}
+
 		public int ReadFieldValueDoubleWord(SafeFileHandle fileHandle, TableInstance table, Enum fieldOrdinal, int recordNumber, ref int dataPointer, AVImarkDataType dataType, bool isClassic)
 		{
 			lock (_singleThread)
 			{
 				DatabaseHandles.Main = fileHandle;
 				return _readFieldValueDoubleWord(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, isClassic);
+			}
+		}
+
+		public int ReadFieldValueDoubleWord(SafeFileHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref int dataPointer, AVImarkDataType dataType, int? fieldLength)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _readFieldValueDoubleWord2(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, (int)fieldLength);
 			}
 		}
 
@@ -276,12 +417,30 @@ namespace CarsonDB
 			}
 		}
 
+		public int ReadFieldValueFloat(SafeFileHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref float dataPointer, AVImarkDataType dataType, int? fieldLength)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _readFieldValueFloat2(DatabaseHandles, table, fieldOrdinal, recordNumber, ref dataPointer, dataType, (int)fieldLength);
+			}
+		}
+
 		public int ReadFieldValueDate(SafeFileHandle fileHandle, TableInstance table, Enum fieldOrdinal, int recordNumber, ref ushort dataPointer, AVImarkDataType dataType, bool isClassic)
 		{
 			lock (_singleThread)
 			{
 				DatabaseHandles.Main = fileHandle;
 				return _readFieldValueDate(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, isClassic);
+			}
+		}
+
+		public int ReadFieldValueDate(SafeFileHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref ushort dataPointer, AVImarkDataType dataType, int? fieldLength)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _readFieldValueDate2(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, (int)fieldLength);
 			}
 		}
 
@@ -294,6 +453,15 @@ namespace CarsonDB
 			}
 		}
 
+		public int ReadFieldValueLong(SafeFileHandle fileHandle, TableInstance table, Enum fieldOrdinal, int recordNumber, ref uint dataPointer, AVImarkDataType dataType, int? fieldLength)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _readFieldValueLong2(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, (int)fieldLength);
+			}
+		}
+
 		public int ReadFieldValueWord(SafeFileHandle fileHandle, TableInstance table, Enum fieldOrdinal, int recordNumber, ref ushort dataPointer, AVImarkDataType dataType, bool isClassic)
 		{
 			lock (_singleThread)
@@ -303,12 +471,30 @@ namespace CarsonDB
 			}
 		}
 
+		public int ReadFieldValueWord(SafeFileHandle fileHandle, TableInstance table, int fieldOrdinal, int recordNumber, ref ushort dataPointer, AVImarkDataType dataType, int? fieldLength)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _readFieldValueWord2(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, (int)fieldLength);
+			}
+		}
+
 		public int ReadFieldValueByte(SafeFileHandle fileHandle, TableInstance table, Enum fieldOrdinal, int recordNumber, ref byte dataPointer, AVImarkDataType dataType, bool isClassic)
 		{
 			lock (_singleThread)
 			{
 				DatabaseHandles.Main = fileHandle;
 				return _readFieldValueByte(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, isClassic);
+			}
+		}
+
+		public int ReadFieldValueByte(SafeFileHandle fileHandle, TableInstance table, Enum fieldOrdinal, int recordNumber, ref byte dataPointer, AVImarkDataType dataType, int? fieldLength)
+		{
+			lock (_singleThread)
+			{
+				DatabaseHandles.Main = fileHandle;
+				return _readFieldValueByte2(DatabaseHandles, table, Convert.ToInt32(fieldOrdinal), recordNumber, ref dataPointer, dataType, (int)fieldLength);
 			}
 		}
 

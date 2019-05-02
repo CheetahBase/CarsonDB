@@ -31,6 +31,7 @@ namespace CarsonDBTest
 		private delegate void BuildFollowRecordsDelegate();
 		private delegate void BuildItemRecordsDelegate();
 		private delegate void BuildLabRecordsDelegate();
+		private delegate void BuildMedicalRecordsDelegate();
 		private delegate void BuildPoRecordsDelegate();
 		private delegate void BuildPriceRecordsDelegate();
 		private delegate void BuildProblemRecordsDelegate();
@@ -59,6 +60,7 @@ namespace CarsonDBTest
 		private static BuildFollowRecordsDelegate _buildFollowRecords;
 		private static BuildItemRecordsDelegate _buildItemRecords;
 		private static BuildLabRecordsDelegate _buildLabRecords;
+		private static BuildMedicalRecordsDelegate _buildMedicalRecords;
 		private static BuildPoRecordsDelegate _buildPoRecords;
 		private static BuildPriceRecordsDelegate _buildPriceRecords;
 		private static BuildProblemRecordsDelegate _buildProblemRecords;
@@ -99,6 +101,7 @@ namespace CarsonDBTest
 				_buildFollowRecords = (BuildFollowRecordsDelegate)Load<BuildFollowRecordsDelegate>("BuildFollowRecords");
 				_buildItemRecords = (BuildItemRecordsDelegate)Load<BuildItemRecordsDelegate>("BuildItemRecords");
 				_buildLabRecords = (BuildLabRecordsDelegate)Load<BuildLabRecordsDelegate>("BuildLabRecords");
+				_buildMedicalRecords = (BuildMedicalRecordsDelegate)Load<BuildMedicalRecordsDelegate>("BuildMedicalRecords");
 				_buildPoRecords = (BuildPoRecordsDelegate)Load<BuildPoRecordsDelegate>("BuildPoRecords");
 				_buildPriceRecords = (BuildPriceRecordsDelegate)Load<BuildPriceRecordsDelegate>("BuildPriceRecords");
 				_buildProblemRecords = (BuildProblemRecordsDelegate)Load<BuildProblemRecordsDelegate>("BuildProblemRecords");
@@ -140,6 +143,7 @@ namespace CarsonDBTest
 				_buildFollowRecords = null;
 				_buildItemRecords = null;
 				_buildLabRecords = null;
+				_buildMedicalRecords = null;
 				_buildPoRecords = null;
 				_buildPriceRecords = null;
 				_buildProblemRecords = null;
@@ -178,7 +182,7 @@ namespace CarsonDBTest
 		{
 			decimal decimalValue2 = decimal.Parse(value2);
 
-			if (Math.Abs(value1 - decimalValue2) <= 0.0001M)
+			if (Math.Abs(value1 - decimalValue2) <= 0.001M)
 				return true;
 			else
 				return false;
@@ -258,6 +262,12 @@ namespace CarsonDBTest
 		{
 			LoadDll();
 			_buildLabRecords();
+		}
+
+		public static void BuildMedicalRecords()
+		{
+			LoadDll();
+			_buildMedicalRecords();
 		}
 
 		public static void BuildPoRecords()

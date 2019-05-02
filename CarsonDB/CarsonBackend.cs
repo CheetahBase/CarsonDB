@@ -35,6 +35,10 @@ namespace CarsonDB
 
 		protected List<Definition> DatabaseDefinition = new List<Definition>();
 		protected bool ReadError = false;
+		protected int? ModernRecordLength = null;
+		protected int? ClassicRecordLength = null;
+		protected bool ForcePhraseOpen = false;
+		protected bool ForceWpOpen = false;
 
 		private FileStream _stream = null;
 		private BinaryReader _reader = null;
@@ -306,7 +310,8 @@ namespace CarsonDB
 
 			if (databaseDefinition.FieldType == AVImarkDataType.AVImarkSingle)
 			{
-				compareTo = (Convert.ToSingle(compareTo) * 100).ToString();
+				if (databaseDefinition.Multiplier != 0)
+					compareTo = (Convert.ToDecimal(compareTo) / databaseDefinition.Multiplier).ToString();
 			}
 			else if (databaseDefinition.FieldType == AVImarkDataType.AVImarkImpliedDecimal || databaseDefinition.FieldType == AVImarkDataType.AVImarkSignedImpliedDecimal)
 			{
@@ -427,6 +432,9 @@ namespace CarsonDB
 		/// <returns></returns>
 		private bool PhraseLinkExists()
 		{
+			if (this.ForcePhraseOpen)
+				return true;
+
 			foreach (var databaseDefinition in DatabaseDefinition)
 			{
 				if (databaseDefinition.FieldType == AVImarkDataType.AVImarkLinkToPhrase)
@@ -444,6 +452,9 @@ namespace CarsonDB
 		/// <returns></returns>
 		private bool WpLinkExists()
 		{
+			if (this.ForceWpOpen)
+				return true;
+
 			foreach (var databaseDefinition in DatabaseDefinition)
 			{
 				if (databaseDefinition.FieldType == AVImarkDataType.AVImarkLinkToWp)
@@ -634,7 +645,10 @@ namespace CarsonDB
 					this.Open();
 				}
 
-				recordCount = _carsonLib.RecordCount(_stream.SafeFileHandle, this.TableId, this.IsClassic());
+				if (this.ModernRecordLength == null)
+					recordCount = _carsonLib.RecordCount(_stream.SafeFileHandle, this.TableId, this.IsClassic());
+				else
+					recordCount = _carsonLib.RecordCount(_stream, RecordLength());
 
 				for (int x = 1; x <= recordCount; x++)
 				{
@@ -692,7 +706,10 @@ namespace CarsonDB
 				word1 = Convert.ToUInt16(_filterClause[item].CompareTo);
 			}
 
-			recordPtr.Add(_carsonLib.RecordSearchWord(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, word1, word2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
+			if (this.TableId == TableInstance.MiscDirect)
+				recordPtr.Add(_carsonLib.RecordSearchWord(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, word1, word2, this.TableId, FieldOffset(databaseDefinition.FieldOrdinal), RecordLength(), isNot));
+			else
+				recordPtr.Add(_carsonLib.RecordSearchWord(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, word1, word2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
 		}
 
 		private void FilterByte(int item, ref List<IntPtr> recordPtr, Definition databaseDefinition)
@@ -731,7 +748,10 @@ namespace CarsonDB
 				byte1 = StringToByte(_filterClause[item].CompareTo);
 			}
 
-			recordPtr.Add(_carsonLib.RecordSearchByte(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, byte1, byte2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
+			if (this.TableId == TableInstance.MiscDirect)
+				recordPtr.Add(_carsonLib.RecordSearchByte(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, byte1, byte2, this.TableId, FieldOffset(databaseDefinition.FieldOrdinal), RecordLength(), isNot));
+			else
+				recordPtr.Add(_carsonLib.RecordSearchByte(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, byte1, byte2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
 		}
 
 		private void FilterCharacter(int item, ref List<IntPtr> recordPtr, Definition databaseDefinition)
@@ -770,7 +790,10 @@ namespace CarsonDB
 				byte1 = StringToChar(_filterClause[item].CompareTo);
 			}
 
-			recordPtr.Add(_carsonLib.RecordSearchByte(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, byte1, byte2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
+			if (this.TableId == TableInstance.MiscDirect)
+				recordPtr.Add(_carsonLib.RecordSearchByte(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, byte1, byte2, this.TableId, FieldOffset(databaseDefinition.FieldOrdinal), RecordLength(), isNot));
+			else
+				recordPtr.Add(_carsonLib.RecordSearchByte(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, byte1, byte2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
 		}
 
 		private void FilterImpliedDecimal(int item, ref List<IntPtr> recordPtr, Definition databaseDefinition)
@@ -809,7 +832,10 @@ namespace CarsonDB
 				signedInt1 = Convert.ToInt32(_filterClause[item].CompareTo);
 			}
 
-			recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, signedInt1, signedInt2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
+			if (this.TableId == TableInstance.MiscDirect)
+				recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, signedInt1, signedInt2, this.TableId, FieldOffset(databaseDefinition.FieldOrdinal), RecordLength(), isNot));
+			else
+				recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, signedInt1, signedInt2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
 		}
 
 		private void FilterSignedInteger(int item, ref List<IntPtr> recordPtr, Definition databaseDefinition)
@@ -848,7 +874,10 @@ namespace CarsonDB
 				signedInt1 = Convert.ToInt32(_filterClause[item].CompareTo);
 			}
 
-			recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, signedInt1, signedInt2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
+			if (this.TableId == TableInstance.MiscDirect)
+				recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, signedInt1, signedInt2, this.TableId, FieldOffset(databaseDefinition.FieldOrdinal), RecordLength(), isNot));
+			else
+				recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, signedInt1, signedInt2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
 		}
 
 		private void FilterDoubleWord(int item, ref List<IntPtr> recordPtr, Definition databaseDefinition)
@@ -887,7 +916,10 @@ namespace CarsonDB
 				unsignedInt1 = Convert.ToUInt32(_filterClause[item].CompareTo);
 			}
 
-			recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, (int)unsignedInt1, (int)unsignedInt2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
+			if (this.TableId == TableInstance.MiscDirect)
+				recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, (int)unsignedInt1, (int)unsignedInt2, this.TableId, FieldOffset(databaseDefinition.FieldOrdinal), RecordLength(), isNot));
+			else
+				recordPtr.Add(_carsonLib.RecordSearchInteger(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, (int)unsignedInt1, (int)unsignedInt2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
 		}
 
 		private void FilterSingle(int item, ref List<IntPtr> recordPtr, Definition databaseDefinition)
@@ -931,7 +963,10 @@ namespace CarsonDB
 				float1 = Convert.ToSingle(_filterClause[item].CompareTo);
 			}
 
-			recordPtr.Add(_carsonLib.RecordSearchFloat(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, float1, float2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
+			if (this.TableId == TableInstance.MiscDirect)
+				recordPtr.Add(_carsonLib.RecordSearchFloat(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, float1, float2, this.TableId, FieldOffset(databaseDefinition.FieldOrdinal), RecordLength(), isNot));
+			else
+				recordPtr.Add(_carsonLib.RecordSearchFloat(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, float1, float2, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
 		}
 
 		private void FilterString(int item, ref List<IntPtr> recordPtr, Definition databaseDefinition)
@@ -944,7 +979,10 @@ namespace CarsonDB
 			else if (_filterClause[item].Comparison == ComparisonType.NotEqualTo)
 				searchType = (int)StringComparisonType.NotEqualTo;
 
-			recordPtr.Add(_carsonLib.RecordSearchString(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, new StringBuilder(_filterClause[item].CompareTo), searchType, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
+			if (this.TableId == TableInstance.MiscDirect)
+				recordPtr.Add(_carsonLib.RecordSearchString(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, new StringBuilder(_filterClause[item].CompareTo), searchType, this.TableId, FieldOffset(databaseDefinition.FieldOrdinal), RecordLength(), isNot));
+			else
+				recordPtr.Add(_carsonLib.RecordSearchString(_stream.SafeFileHandle, InternalRecordType(databaseDefinition.FieldType), recordPtr.Count == 0 ? IntPtr.Zero : recordPtr[recordPtr.Count - 1], 0, new StringBuilder(_filterClause[item].CompareTo), searchType, this.TableId, _filterClause[item].FieldOrdinal, _isClassic, isNot));
 		}
 
 		private byte StringToChar(string fieldData)
@@ -981,6 +1019,16 @@ namespace CarsonDB
 			databaseDefinition.FieldName = fieldName;
 			databaseDefinition.FieldOrdinal = fieldOrdinal;
 			databaseDefinition.FieldType = fieldType;
+			DatabaseDefinition.Add(databaseDefinition);
+		}
+
+		protected void AddFieldDefinition(string fieldName, Enum fieldOrdinal, AVImarkDataType fieldType, Decimal multiplier)
+		{
+			Definition databaseDefinition = new Definition();
+			databaseDefinition.FieldName = fieldName;
+			databaseDefinition.FieldOrdinal = fieldOrdinal;
+			databaseDefinition.FieldType = fieldType;
+			databaseDefinition.Multiplier = multiplier;
 			DatabaseDefinition.Add(databaseDefinition);
 		}
 
@@ -1213,7 +1261,22 @@ namespace CarsonDB
 		/// <returns></returns>
 		protected Definition LoadDatabaseDefinition(Enum definition)
 		{
-			return DatabaseDefinition[Convert.ToInt32(definition)];
+			if (this.TableId == TableInstance.MiscDirect)
+			{
+				for (int x = 0; x < DatabaseDefinition.Count; x++)
+				{
+					if (Convert.ToInt32(DatabaseDefinition[x].FieldOrdinal) == Convert.ToInt32(definition))
+					{
+						return DatabaseDefinition[x];
+					}
+				}
+
+				return null;
+			}
+			else
+			{
+				return DatabaseDefinition[Convert.ToInt32(definition)];
+			}
 		} 
 	}
 }

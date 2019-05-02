@@ -319,7 +319,7 @@ namespace CarsonDB
 			this.AddFieldDefinition(AnimalFields.AnimalBreed, AnimalFieldOrdinals.AnimalBreed, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(AnimalFields.AnimalSpecies, AnimalFieldOrdinals.AnimalSpecies, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(AnimalFields.AnimalRegistration, AnimalFieldOrdinals.AnimalRegistration, AVImarkDataType.AVImarkDynamicString);
-			this.AddFieldDefinition(AnimalFields.AnimalWeight, AnimalFieldOrdinals.AnimalWeight, AVImarkDataType.AVImarkSingle);
+			this.AddFieldDefinition(AnimalFields.AnimalWeight, AnimalFieldOrdinals.AnimalWeight, AVImarkDataType.AVImarkSingle, 0.01m);
 			this.AddFieldDefinition(AnimalFields.AnimalMeasure, AnimalFieldOrdinals.AnimalMeasure, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(AnimalFields.AnimalColor, AnimalFieldOrdinals.AnimalColor, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(AnimalFields.AnimalClient, AnimalFieldOrdinals.AnimalClient, AVImarkDataType.AVImarkDoubleWord);
