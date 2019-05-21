@@ -116,6 +116,21 @@ namespace CarsonDBTest
 						if (fields[10].Length > 0)
 							appointment.AddFilterCriteria(Appointment.AppointmentFields.AppointmentTypeCode, ComparisonType.EqualTo, fields[10]);
 
+						if (fields[11].Length > 0)
+							appointment.AddFilterCriteria(Appointment.AppointmentFields.AppointmentNewClient, ComparisonType.EqualTo, fields[11]);
+
+						if (fields[12].Length > 0)
+							appointment.AddFilterCriteria(Appointment.AppointmentFields.AppointmentNewPatient, ComparisonType.EqualTo, fields[12]); 
+
+						if (fields[13].Length > 0)
+							appointment.AddFilterCriteria(Appointment.AppointmentFields.AppointmentNewSpecies, ComparisonType.EqualTo, fields[13]);
+
+						if (fields[14].Length > 0)
+							appointment.AddFilterCriteria(Appointment.AppointmentFields.AppointmentNewPhone, ComparisonType.EqualTo, fields[14]);
+
+						if (fields[15].Length > 0)
+							appointment.AddFilterCriteria(Appointment.AppointmentFields.AppointmentNewArea, ComparisonType.EqualTo, fields[15]);
+
 						var appointmentList = appointment.AppointmentList();
 
 						if (appointmentList.Count == 0)
@@ -176,7 +191,9 @@ namespace CarsonDBTest
 					appointmentList[lineNumber].AppointmentDoctor == fields[4] && Shared.CompareAmount(appointmentList[lineNumber].AppointmentType, fields[5]) && 
 					Shared.CompareAmount(appointmentList[lineNumber].AppointmentClient, fields[6]) && appointmentList[lineNumber].AppointmentNote == fields[7] && 
 					Shared.CompareAmount(appointmentList[lineNumber].AppointmentParent, fields[8]) && Shared.CompareAmount(appointmentList[lineNumber].AppointmentParentis, fields[9]) &&
-					appointmentList[lineNumber].AppointmentTypeCode == fields[10])
+					appointmentList[lineNumber].AppointmentTypeCode == fields[10] && appointmentList[lineNumber].AppointmentNewClient == fields[11] &&
+					appointmentList[lineNumber].AppointmentNewPatient == fields[12] && appointmentList[lineNumber].AppointmentNewSpecies == fields[13] &&
+					appointmentList[lineNumber].AppointmentNewPhone == fields[14] && appointmentList[lineNumber].AppointmentNewArea == fields[15])
 			{
 				return true;
 			}

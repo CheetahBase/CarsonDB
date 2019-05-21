@@ -403,6 +403,9 @@ namespace CarsonDB
 				case AVImarkDataType.AVImarkLinkToWp:
 					return 11;
 
+				case AVImarkDataType.AVImarkAutoNumber:
+					return 12;
+
 				default:
 					return -1;
 			}
@@ -582,6 +585,7 @@ namespace CarsonDB
 						break;
 
 					case AVImarkDataType.AVImarkDoubleWord:
+					case AVImarkDataType.AVImarkAutoNumber:
 						FilterDoubleWord(x, ref recordPtr, databaseDefinition);
 						break;
 

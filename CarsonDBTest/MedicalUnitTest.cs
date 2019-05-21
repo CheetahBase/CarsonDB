@@ -134,20 +134,6 @@ namespace CarsonDBTest
 			Assert.IsTrue(true, "MedicalTest2 Passed!!");
 		}
 
-		//MID$(outrec, 1, 1) = "A"       ' MEDICAL_RECD
-		//MID$(outrec, 2, 4) = RandomSingle2()       ' MEDICAL_WEIGHT
-		//MID$(outrec, 6, 4) = RandomSingle2()       ' MEDICAL_TEMP
-		//MID$(outrec, 10, 4) = RandomSingle2()       ' MEDICAL_RESP
-		//MID$(outrec, 14, 4) = RandomSingle2()       ' MEDICAL_PULSE
-		//MID$(outrec, 18, 16) = StringText(RandomDescription()) 'MEDICAL_CRT
-		//MID$(outrec, 35, 30) = StringText(RandomDescription()) 'MEDICAL_OTHER
-		//MID$(outrec, 66, 4) = RandomNote(4, 5, 0) 'MEDICAL_COMPLAINT
-		//MID$(outrec, 70, 4) = RandomNote(4, 5, 0) 'MEDICAL_EXAMNOTES
-		//MID$(outrec, 74, 4) = RandomNote(4, 5, 0) 'MEDICAL_CLIENTINSTRUCTIONS
-		//MID$(outrec, 78, 4) = DoubleWord(INT(RND * 3000) + 1) 'MEDICAL_SERVICE
-		//MID$(outrec, 82, 3) = RandomNote(4, 5, 0) 'MEDICAL_ASSESSNOTES
-		//MID$(outrec, 86, 4) = RandomNote(4, 5, 0) 'MEICAL_PLANNOTES    
-
 		private bool MedicalRecordCompare(List<Medical.MedicalData> medicalList, string[] fields, int lineNumber)
 		{
 			if (medicalList[lineNumber].MedicalRecd == fields[0] && Shared.CompareAmount(medicalList[lineNumber].MedicalWeight, fields[1]) && Shared.CompareAmount(medicalList[lineNumber].MedicalTemp, fields[2]) &&

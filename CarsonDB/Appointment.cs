@@ -22,7 +22,12 @@ namespace CarsonDB
 			AppointmentNote, 
 			AppointmentParent,
 			AppointmentParentis,
-			AppointmentTypeCode
+			AppointmentTypeCode, 
+			AppointmentNewClient,
+			AppointmentNewPatient,
+			AppointmentNewSpecies,
+			AppointmentNewPhone,
+			AppointmentNewArea
 		}
 
 		public static class AppointmentFields
@@ -36,6 +41,11 @@ namespace CarsonDB
 			public const string AppointmentDoctor = "APPOINT_DOCTOR";
 			public const string AppointmentType = "APPOINT_TYPE";
 			public const string AppointmentClient = "APPOINT_CLIENT";
+			public const string AppointmentNewClient = "APPOINT_NEWCLIENT";
+			public const string AppointmentNewPatient = "APPOINT_NEWPATIENT";
+			public const string AppointmentNewSpecies = "APPOINT_NEWSPECIES";
+			public const string AppointmentNewPhone = "APPOINT_NEWPHONE";
+			public const string AppointmentNewArea = "APPOINT_NEWAREA";
 			public const string AppointmentNote = "APPOINT_NOTE";
 			public const string AppointmentParent = "APPOINT_PARENT";
 			public const string AppointmentParentis = "APPOINT_PARENTIS";
@@ -169,6 +179,46 @@ namespace CarsonDB
 				}
 			}
 
+			public string AppointmentNewClient
+			{
+				get
+				{
+					return _appointment.StringFieldValue(AppointmentFieldOrdinals.AppointmentNewClient, _recordNumber);
+				}
+			}
+
+			public string AppointmentNewPatient
+			{
+				get
+				{
+					return _appointment.StringFieldValue(AppointmentFieldOrdinals.AppointmentNewPatient, _recordNumber);
+				}
+			}
+
+			public string AppointmentNewSpecies
+			{
+				get
+				{
+					return _appointment.StringFieldValue(AppointmentFieldOrdinals.AppointmentNewSpecies, _recordNumber);
+				}
+			}
+
+			public string AppointmentNewPhone
+			{
+				get
+				{
+					return _appointment.StringFieldValue(AppointmentFieldOrdinals.AppointmentNewPhone, _recordNumber);
+				}
+			}
+
+			public string AppointmentNewArea
+			{
+				get
+				{
+					return _appointment.StringFieldValue(AppointmentFieldOrdinals.AppointmentNewArea, _recordNumber);
+				}
+			}
+
 			[System.ComponentModel.DefaultValue(RecordStatus.None)]
 			public RecordStatus RecordState
 			{
@@ -207,6 +257,11 @@ namespace CarsonDB
 			this.AddFieldDefinition(AppointmentFields.AppointmentParent, AppointmentFieldOrdinals.AppointmentParent, AVImarkDataType.AVImarkDoubleWord);
 			this.AddFieldDefinition(AppointmentFields.AppointmentParentis, AppointmentFieldOrdinals.AppointmentParentis, AVImarkDataType.AVImarkByte);
 			this.AddFieldDefinition(AppointmentFields.AppointmentTypeCode, AppointmentFieldOrdinals.AppointmentTypeCode, AVImarkDataType.AVImarkDynamicString);
+			this.AddFieldDefinition(AppointmentFields.AppointmentNewClient, AppointmentFieldOrdinals.AppointmentNewClient, AVImarkDataType.AVImarkDynamicString);
+			this.AddFieldDefinition(AppointmentFields.AppointmentNewPatient, AppointmentFieldOrdinals.AppointmentNewPatient, AVImarkDataType.AVImarkDynamicString);
+			this.AddFieldDefinition(AppointmentFields.AppointmentNewSpecies, AppointmentFieldOrdinals.AppointmentNewSpecies, AVImarkDataType.AVImarkDynamicString);
+			this.AddFieldDefinition(AppointmentFields.AppointmentNewPhone, AppointmentFieldOrdinals.AppointmentNewPhone, AVImarkDataType.AVImarkDynamicString);
+			this.AddFieldDefinition(AppointmentFields.AppointmentNewArea, AppointmentFieldOrdinals.AppointmentNewArea, AVImarkDataType.AVImarkDynamicString);
 		}
 
 		public List<AppointmentData> AppointmentList()

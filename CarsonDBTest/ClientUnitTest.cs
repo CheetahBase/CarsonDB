@@ -157,6 +157,9 @@ namespace CarsonDBTest
 						if (fields[25].Length > 0)
 							client.AddFilterCriteria(Client.ClientFields.ClientCell, ComparisonType.EqualTo, fields[25]);
 
+						if (fields[26].Length > 0)
+							client.AddFilterCriteria(Client.ClientFields.ClientBalance, ComparisonType.EqualTo, fields[26]);
+
 						var clientList = client.ClientList();
 
 						if (clientList.Count == 0)
@@ -180,7 +183,7 @@ namespace CarsonDBTest
 					Shared.CompareBool(clientList[lineNumber].ClientSuspend, fields[16]) && Shared.CompareAmount(clientList[lineNumber].ClientFlags, fields[17]) && (clientList[lineNumber].ClientAdded - DateTime.Parse(fields[18])).TotalDays == 0 &&
 					clientList[lineNumber].ClientDoctor == fields[19] && Shared.CompareAmount(clientList[lineNumber].ClientCompany, fields[20]) && clientList[lineNumber].ClientSpouse == fields[21] &&
 					clientList[lineNumber].ClientEmail == fields[22] && clientList[lineNumber].ClientCounty == fields[23] && Shared.CompareAmount(clientList[lineNumber].ClientFolder, fields[24]) &&
-					clientList[lineNumber].ClientCell == fields[25])
+					clientList[lineNumber].ClientCell == fields[25] && Shared.CompareAmount(clientList[lineNumber].ClientBalance, fields[26]))
 			{
 				return true;
 			}

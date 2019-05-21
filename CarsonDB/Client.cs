@@ -38,7 +38,8 @@ namespace CarsonDB
 			ClientEmail,
 			ClientCounty,
 			ClientFolder,
-			ClientCell
+			ClientCell,
+			ClientBalance
 		}
 
 		public static class ClientFields
@@ -55,6 +56,7 @@ namespace CarsonDB
 			public const string ClientArea = "CLIENT_AREA";
 			public const string ClientPhone = "CLIENT_PHONE";
 			public const string ClientFirst = "CLIENT_FIRST";
+			public const string ClientBalance = "CLIENT_BALANCE";
 			public const string ClientBusiness = "CLIENT_BUSINESS";
 			public const string ClientCodes = "CLIENT_CODES";
 			public const string ClientClass = "CLIENT_CLASS";
@@ -188,6 +190,14 @@ namespace CarsonDB
 				get
 				{
 					return _client.StringFieldValue(ClientFieldOrdinals.ClientFirst, _recordNumber);
+				}
+			}
+
+			public Decimal ClientBalance
+			{
+				get
+				{
+					return _client.SignedImpliedDecimalFieldValue(ClientFieldOrdinals.ClientBalance, _recordNumber);
 				}
 			}
 
@@ -364,6 +374,7 @@ namespace CarsonDB
 			this.AddFieldDefinition(ClientFields.ClientCounty, ClientFieldOrdinals.ClientCounty, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(ClientFields.ClientFolder, ClientFieldOrdinals.ClientFolder, AVImarkDataType.AVImarkWord);
 			this.AddFieldDefinition(ClientFields.ClientCell, ClientFieldOrdinals.ClientCell, AVImarkDataType.AVImarkLinkToPhrase);
+			this.AddFieldDefinition(ClientFields.ClientBalance, ClientFieldOrdinals.ClientBalance, AVImarkDataType.AVImarkSignedImpliedDecimal);
 		}
 
 		public List<ClientData> ClientList()

@@ -129,7 +129,7 @@ namespace CarsonDB
 			this.AddFieldDefinition(LabFields.LabRecd, LabFieldOrdinals.LabRecd, AVImarkDataType.AVImarkCharacter);
 			this.AddFieldDefinition(LabFields.LabTreatment, LabFieldOrdinals.LabTreatment, AVImarkDataType.AVImarkDoubleWord);
 			this.AddFieldDefinition(LabFields.LabCompany, LabFieldOrdinals.LabCompany, AVImarkDataType.AVImarkByte);
-			this.AddFieldDefinition(LabFields.LabId, LabFieldOrdinals.Id, AVImarkDataType.AVImarkDynamicString);
+			this.AddFieldDefinition(LabFields.LabId, LabFieldOrdinals.LabId, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(LabFields.LabDescription, LabFieldOrdinals.LabDescription, AVImarkDataType.AVImarkDynamicString);
 		}
 
