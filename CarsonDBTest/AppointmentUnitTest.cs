@@ -131,9 +131,6 @@ namespace CarsonDBTest
 						if (fields[15].Length > 0)
 							appointment.AddFilterCriteria(Appointment.AppointmentFields.AppointmentNewArea, ComparisonType.EqualTo, fields[15]);
 
-						if (fields[16].Length > 0)
-							appointment.AddFilterCriteria(Appointment.AppointmentFields.AppointmentMadeBy, ComparisonType.EqualTo, fields[16]);
-
 						var appointmentList = appointment.AppointmentList();
 
 						if (appointmentList.Count == 0)
@@ -196,8 +193,7 @@ namespace CarsonDBTest
 					Shared.CompareAmount(appointmentList[lineNumber].AppointmentParent, fields[8]) && Shared.CompareAmount(appointmentList[lineNumber].AppointmentParentis, fields[9]) &&
 					appointmentList[lineNumber].AppointmentTypeCode == fields[10] && appointmentList[lineNumber].AppointmentNewClient == fields[11] &&
 					appointmentList[lineNumber].AppointmentNewPatient == fields[12] && appointmentList[lineNumber].AppointmentNewSpecies == fields[13] &&
-					appointmentList[lineNumber].AppointmentNewPhone == fields[14] && appointmentList[lineNumber].AppointmentNewArea == fields[15] &&
-					appointmentList[lineNumber].AppointmentMadeBy == fields[16])
+					appointmentList[lineNumber].AppointmentNewPhone == fields[14] && appointmentList[lineNumber].AppointmentNewArea == fields[15])
 			{
 				return true;
 			}

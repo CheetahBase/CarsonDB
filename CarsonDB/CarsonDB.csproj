@@ -92,7 +92,6 @@
     <Compile Include="Quote.cs" />
     <Compile Include="Reminder.cs" />
     <Compile Include="Service.cs" />
-    <Compile Include="ServMemo.cs" />
     <Compile Include="SharedClasses.cs" />
     <Compile Include="Split.cs" />
     <Compile Include="Table.cs" />
