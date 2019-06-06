@@ -33,12 +33,14 @@ namespace CarsonDBTest
 		private delegate void BuildLabRecordsDelegate();
 		private delegate void BuildMedicalRecordsDelegate();
 		private delegate void BuildPoRecordsDelegate();
+		private delegate void BuildPrescripRecordsDelegate();
 		private delegate void BuildPriceRecordsDelegate();
 		private delegate void BuildProblemRecordsDelegate();
 		private delegate void BuildQuotailRecordsDelegate();
 		private delegate void BuildQuoteRecordsDelegate();
 		private delegate void BuildReminderRecordsDelegate();
 		private delegate void BuildServiceRecordsDelegate();
+		private delegate void BuildServMemoRecordsDelegate();
 		private delegate void BuildSplitRecordsDelegate();
 		private delegate void BuildTableRecordsDelegate();
 		private delegate void BuildTestRecordsDelegate();
@@ -62,12 +64,14 @@ namespace CarsonDBTest
 		private static BuildLabRecordsDelegate _buildLabRecords;
 		private static BuildMedicalRecordsDelegate _buildMedicalRecords;
 		private static BuildPoRecordsDelegate _buildPoRecords;
+		private static BuildPrescripRecordsDelegate _buildPrescripRecords;
 		private static BuildPriceRecordsDelegate _buildPriceRecords;
 		private static BuildProblemRecordsDelegate _buildProblemRecords;
 		private static BuildQuotailRecordsDelegate _buildQuotailRecords;
 		private static BuildQuoteRecordsDelegate _buildQuoteRecords;
 		private static BuildReminderRecordsDelegate _buildReminderRecords;
 		private static BuildServiceRecordsDelegate _buildServiceRecords;
+		private static BuildServMemoRecordsDelegate _buildServMemoRecords;
 		private static BuildSplitRecordsDelegate _buildSplitRecords;
 		private static BuildTableRecordsDelegate _buildTableRecords;
 		private static BuildTestRecordsDelegate _buildTestRecords;
@@ -103,12 +107,14 @@ namespace CarsonDBTest
 				_buildLabRecords = (BuildLabRecordsDelegate)Load<BuildLabRecordsDelegate>("BuildLabRecords");
 				_buildMedicalRecords = (BuildMedicalRecordsDelegate)Load<BuildMedicalRecordsDelegate>("BuildMedicalRecords");
 				_buildPoRecords = (BuildPoRecordsDelegate)Load<BuildPoRecordsDelegate>("BuildPoRecords");
+				_buildPrescripRecords = (BuildPrescripRecordsDelegate)Load<BuildPrescripRecordsDelegate>("BuildPrescripRecords");
 				_buildPriceRecords = (BuildPriceRecordsDelegate)Load<BuildPriceRecordsDelegate>("BuildPriceRecords");
 				_buildProblemRecords = (BuildProblemRecordsDelegate)Load<BuildProblemRecordsDelegate>("BuildProblemRecords");
 				_buildQuotailRecords = (BuildQuotailRecordsDelegate)Load<BuildQuotailRecordsDelegate>("BuildQuotailRecords");
 				_buildQuoteRecords = (BuildQuoteRecordsDelegate)Load<BuildQuoteRecordsDelegate>("BuildQuoteRecords");
 				_buildReminderRecords = (BuildReminderRecordsDelegate)Load<BuildReminderRecordsDelegate>("BuildReminderRecords");
 				_buildServiceRecords = (BuildServiceRecordsDelegate)Load<BuildServiceRecordsDelegate>("BuildServiceRecords");
+				_buildServMemoRecords = (BuildServMemoRecordsDelegate)Load<BuildServMemoRecordsDelegate>("BuildServMemoRecords");
 				_buildSplitRecords = (BuildSplitRecordsDelegate)Load<BuildSplitRecordsDelegate>("BuildSplitRecords");
 				_buildTableRecords = (BuildTableRecordsDelegate)Load<BuildTableRecordsDelegate>("BuildTableRecords");
 				_buildTestRecords = (BuildTestRecordsDelegate)Load<BuildTestRecordsDelegate>("BuildTestRecords");
@@ -145,12 +151,14 @@ namespace CarsonDBTest
 				_buildLabRecords = null;
 				_buildMedicalRecords = null;
 				_buildPoRecords = null;
+				_buildPrescripRecords = null;
 				_buildPriceRecords = null;
 				_buildProblemRecords = null;
 				_buildQuotailRecords = null;
 				_buildQuoteRecords = null;
 				_buildReminderRecords = null;
 				_buildServiceRecords = null;
+				_buildServMemoRecords = null;
 				_buildSplitRecords = null;
 				_buildTableRecords = null;
 				_buildTestRecords = null;
@@ -276,6 +284,12 @@ namespace CarsonDBTest
 			_buildPoRecords();
 		}
 
+		public static void BuildPrescripRecords()
+		{
+			LoadDll();
+			_buildPrescripRecords();
+		}
+
 		public static void BuildPriceRecords()
 		{
 			LoadDll();
@@ -310,6 +324,12 @@ namespace CarsonDBTest
 		{
 			LoadDll();
 			_buildServiceRecords();
+		}
+
+		public static void BuildServMemoRecords()
+		{
+			LoadDll();
+			_buildServMemoRecords();
 		}
 
 		public static void BuildSplitRecords()
@@ -347,7 +367,7 @@ namespace CarsonDBTest
 			LoadDll();
 			_updateAnimalRecords();
 		}
-		
+
 		public static void UpdateAppointmentFiles()
 		{
 			LoadDll();
@@ -370,6 +390,6 @@ namespace CarsonDBTest
 			}
 
 			return fieldList;
-		} 
+		}
 	}
 }

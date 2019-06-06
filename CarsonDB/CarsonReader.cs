@@ -200,7 +200,7 @@ namespace CarsonDB
 
 		protected string StringFieldValue(Enum fieldOrdinal, int recordNumber, bool linkToPhrase = false, bool linkToWp = false)
 		{
-			StringBuilder sb = new StringBuilder(255);
+			StringBuilder sb = new StringBuilder(1024);
 
 			try
 			{
