@@ -27,7 +27,8 @@ namespace CarsonDB
 			AppointmentNewPatient,
 			AppointmentNewSpecies,
 			AppointmentNewPhone,
-			AppointmentNewArea
+			AppointmentNewArea,
+			AppointmentMadeBy
 		}
 
 		public static class AppointmentFields
@@ -46,6 +47,7 @@ namespace CarsonDB
 			public const string AppointmentNewSpecies = "APPOINT_NEWSPECIES";
 			public const string AppointmentNewPhone = "APPOINT_NEWPHONE";
 			public const string AppointmentNewArea = "APPOINT_NEWAREA";
+			public const string AppointmentMadeBy = "APPOINT_MADE_BY";
 			public const string AppointmentNote = "APPOINT_NOTE";
 			public const string AppointmentParent = "APPOINT_PARENT";
 			public const string AppointmentParentis = "APPOINT_PARENTIS";
@@ -219,6 +221,14 @@ namespace CarsonDB
 				}
 			}
 
+			public string AppointmentMadeBy
+			{
+				get
+				{
+					return _appointment.StringFieldValue(AppointmentFieldOrdinals.AppointmentMadeBy, _recordNumber);
+				}
+			}
+
 			[System.ComponentModel.DefaultValue(RecordStatus.None)]
 			public RecordStatus RecordState
 			{
@@ -262,6 +272,7 @@ namespace CarsonDB
 			this.AddFieldDefinition(AppointmentFields.AppointmentNewSpecies, AppointmentFieldOrdinals.AppointmentNewSpecies, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(AppointmentFields.AppointmentNewPhone, AppointmentFieldOrdinals.AppointmentNewPhone, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(AppointmentFields.AppointmentNewArea, AppointmentFieldOrdinals.AppointmentNewArea, AVImarkDataType.AVImarkDynamicString);
+			this.AddFieldDefinition(AppointmentFields.AppointmentMadeBy, AppointmentFieldOrdinals.AppointmentMadeBy, AVImarkDataType.AVImarkDynamicString);
 		}
 
 		public List<AppointmentData> AppointmentList()

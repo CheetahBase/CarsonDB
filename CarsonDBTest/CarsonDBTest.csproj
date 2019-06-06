@@ -94,6 +94,7 @@
     <Compile Include="QuotailUnitTest.cs" />
     <Compile Include="QuoteUnitTest.cs" />
     <Compile Include="ReminderUnitTest.cs" />
+    <Compile Include="ServMemoUnitTest.cs" />
     <Compile Include="ServiceUnitTest.cs" />
     <Compile Include="Shared.cs" />
     <Compile Include="SplitUnitTest.cs" />

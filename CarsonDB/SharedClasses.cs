@@ -29,7 +29,8 @@ namespace CarsonDB
 		AVImarkSignedImpliedDecimal,
 		AVImarkLongInteger,
 		AVImarkLinkToPhrase,
-		AVImarkLinkToWp
+		AVImarkLinkToWp,
+		AVImarkLongText
 	}
 
 	public class Definition
@@ -86,6 +87,7 @@ namespace CarsonDB
 		User,
 		Medical,
 		Prescrip,
+		ServMemo,
 		MiscDirect = 1000
 	}
 

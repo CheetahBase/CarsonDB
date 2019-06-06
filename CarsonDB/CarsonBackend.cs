@@ -293,7 +293,7 @@ namespace CarsonDB
 				throw new Exception(databaseDefinition.FieldType.ToString() + " cannot be added as a filter.");
 			}
 
-			if (databaseDefinition.FieldType == AVImarkDataType.AVImarkDynamicString || databaseDefinition.FieldType == AVImarkDataType.AVImarkLinkToPhrase || databaseDefinition.FieldType == AVImarkDataType.AVImarkLinkToWp)
+			if (databaseDefinition.FieldType == AVImarkDataType.AVImarkDynamicString || databaseDefinition.FieldType == AVImarkDataType.AVImarkLinkToPhrase || databaseDefinition.FieldType == AVImarkDataType.AVImarkLinkToWp || databaseDefinition.FieldType == AVImarkDataType.AVImarkLongText)
 			{
 				if (comparisonType != ComparisonType.Contains && comparisonType != ComparisonType.EqualTo && comparisonType != ComparisonType.NotEqualTo)
 				{
@@ -405,6 +405,9 @@ namespace CarsonDB
 
 				case AVImarkDataType.AVImarkAutoNumber:
 					return 12;
+
+				case AVImarkDataType.AVImarkLongText:
+					return 13;
 
 				default:
 					return -1;
@@ -592,6 +595,7 @@ namespace CarsonDB
 					case AVImarkDataType.AVImarkDynamicString:
 					case AVImarkDataType.AVImarkLinkToPhrase:
 					case AVImarkDataType.AVImarkLinkToWp:
+					case AVImarkDataType.AVImarkLongText:
 						FilterString(x, ref recordPtr, databaseDefinition);
 						break;
 
