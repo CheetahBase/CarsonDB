@@ -31,9 +31,7 @@ namespace CarsonDBTest
 		private delegate void BuildFollowRecordsDelegate();
 		private delegate void BuildItemRecordsDelegate();
 		private delegate void BuildLabRecordsDelegate();
-		private delegate void BuildMedicalRecordsDelegate();
 		private delegate void BuildPoRecordsDelegate();
-		private delegate void BuildPrescripRecordsDelegate();
 		private delegate void BuildPriceRecordsDelegate();
 		private delegate void BuildProblemRecordsDelegate();
 		private delegate void BuildQuotailRecordsDelegate();
@@ -61,9 +59,7 @@ namespace CarsonDBTest
 		private static BuildFollowRecordsDelegate _buildFollowRecords;
 		private static BuildItemRecordsDelegate _buildItemRecords;
 		private static BuildLabRecordsDelegate _buildLabRecords;
-		private static BuildMedicalRecordsDelegate _buildMedicalRecords;
 		private static BuildPoRecordsDelegate _buildPoRecords;
-		private static BuildPrescripRecordsDelegate _buildPrescripRecords;
 		private static BuildPriceRecordsDelegate _buildPriceRecords;
 		private static BuildProblemRecordsDelegate _buildProblemRecords;
 		private static BuildQuotailRecordsDelegate _buildQuotailRecords;
@@ -103,9 +99,7 @@ namespace CarsonDBTest
 				_buildFollowRecords = (BuildFollowRecordsDelegate)Load<BuildFollowRecordsDelegate>("BuildFollowRecords");
 				_buildItemRecords = (BuildItemRecordsDelegate)Load<BuildItemRecordsDelegate>("BuildItemRecords");
 				_buildLabRecords = (BuildLabRecordsDelegate)Load<BuildLabRecordsDelegate>("BuildLabRecords");
-				_buildMedicalRecords = (BuildMedicalRecordsDelegate)Load<BuildMedicalRecordsDelegate>("BuildMedicalRecords");
 				_buildPoRecords = (BuildPoRecordsDelegate)Load<BuildPoRecordsDelegate>("BuildPoRecords");
-				_buildPrescripRecords = (BuildPrescripRecordsDelegate)Load<BuildPrescripRecordsDelegate>("BuildPrescripRecords");
 				_buildPriceRecords = (BuildPriceRecordsDelegate)Load<BuildPriceRecordsDelegate>("BuildPriceRecords");
 				_buildProblemRecords = (BuildProblemRecordsDelegate)Load<BuildProblemRecordsDelegate>("BuildProblemRecords");
 				_buildQuotailRecords = (BuildQuotailRecordsDelegate)Load<BuildQuotailRecordsDelegate>("BuildQuotailRecords");
@@ -125,7 +119,7 @@ namespace CarsonDBTest
 			}
 		}
 
-		public static void UnloadDll()
+		private static void UnloadDll()
 		{
 			if (_aviCreateLib != IntPtr.Zero)
 			{
@@ -146,9 +140,7 @@ namespace CarsonDBTest
 				_buildFollowRecords = null;
 				_buildItemRecords = null;
 				_buildLabRecords = null;
-				_buildMedicalRecords = null;
 				_buildPoRecords = null;
-				_buildPrescripRecords = null;
 				_buildPriceRecords = null;
 				_buildProblemRecords = null;
 				_buildQuotailRecords = null;
@@ -163,7 +155,6 @@ namespace CarsonDBTest
 				_updateAnimalRecords = null;
 				_updateAppointmentRecords = null;
 				_resetFiles = null;
-				_dllInitialized = false;
 			}
 		}
 
@@ -186,7 +177,17 @@ namespace CarsonDBTest
 		{
 			decimal decimalValue2 = decimal.Parse(value2);
 
-			if (Math.Abs(value1 - decimalValue2) <= 0.001M)
+			if (Math.Abs(value1 - decimalValue2) <= 0.0001M)
+				return true;
+			else
+				return false;
+		}
+
+		public static bool CompareAmountDecimal2(decimal value1, string value2)
+		{
+			decimal decimalValue2 = decimal.Parse(value2) / 1000;
+
+			if (Math.Abs(value1 - decimalValue2) <= 0.0001M)
 				return true;
 			else
 				return false;
@@ -201,6 +202,18 @@ namespace CarsonDBTest
 		{
 			return value == bool.Parse(value2);
 		}
+
+		//public static void CreateDatabaseFiles()
+		//{
+		//	if (!_databaseInitialized)
+		//	{
+		//		_databaseInitialized = true;
+		//		LoadDll();
+		//		_buildFiles();
+		//		UnloadDll();
+		//		System.Diagnostics.Debug.WriteLine("Creating Database Files...");
+		//	}
+		//}
 
 		public static void BuildAccountRecords()
 		{
@@ -268,22 +281,10 @@ namespace CarsonDBTest
 			_buildLabRecords();
 		}
 
-		public static void BuildMedicalRecords()
-		{
-			LoadDll();
-			_buildMedicalRecords();
-		}
-
 		public static void BuildPoRecords()
 		{
 			LoadDll();
 			_buildPoRecords();
-		}
-
-		public static void BuildPrescripRecords()
-		{
-			LoadDll();
-			_buildPrescripRecords();
 		}
 
 		public static void BuildPriceRecords()
@@ -357,7 +358,7 @@ namespace CarsonDBTest
 			LoadDll();
 			_updateAnimalRecords();
 		}
-
+		
 		public static void UpdateAppointmentFiles()
 		{
 			LoadDll();
@@ -380,6 +381,6 @@ namespace CarsonDBTest
 			}
 
 			return fieldList;
-		}
+		} 
 	}
 }

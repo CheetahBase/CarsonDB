@@ -33,7 +33,6 @@ namespace CarsonDBTest
 		private delegate void BuildLabRecordsDelegate();
 		private delegate void BuildMedicalRecordsDelegate();
 		private delegate void BuildPoRecordsDelegate();
-		private delegate void BuildPrescripRecordsDelegate();
 		private delegate void BuildPriceRecordsDelegate();
 		private delegate void BuildProblemRecordsDelegate();
 		private delegate void BuildQuotailRecordsDelegate();
@@ -63,7 +62,6 @@ namespace CarsonDBTest
 		private static BuildLabRecordsDelegate _buildLabRecords;
 		private static BuildMedicalRecordsDelegate _buildMedicalRecords;
 		private static BuildPoRecordsDelegate _buildPoRecords;
-		private static BuildPrescripRecordsDelegate _buildPrescripRecords;
 		private static BuildPriceRecordsDelegate _buildPriceRecords;
 		private static BuildProblemRecordsDelegate _buildProblemRecords;
 		private static BuildQuotailRecordsDelegate _buildQuotailRecords;
@@ -105,7 +103,6 @@ namespace CarsonDBTest
 				_buildLabRecords = (BuildLabRecordsDelegate)Load<BuildLabRecordsDelegate>("BuildLabRecords");
 				_buildMedicalRecords = (BuildMedicalRecordsDelegate)Load<BuildMedicalRecordsDelegate>("BuildMedicalRecords");
 				_buildPoRecords = (BuildPoRecordsDelegate)Load<BuildPoRecordsDelegate>("BuildPoRecords");
-				_buildPrescripRecords = (BuildPrescripRecordsDelegate)Load<BuildPrescripRecordsDelegate>("BuildPrescripRecords");
 				_buildPriceRecords = (BuildPriceRecordsDelegate)Load<BuildPriceRecordsDelegate>("BuildPriceRecords");
 				_buildProblemRecords = (BuildProblemRecordsDelegate)Load<BuildProblemRecordsDelegate>("BuildProblemRecords");
 				_buildQuotailRecords = (BuildQuotailRecordsDelegate)Load<BuildQuotailRecordsDelegate>("BuildQuotailRecords");
@@ -148,7 +145,6 @@ namespace CarsonDBTest
 				_buildLabRecords = null;
 				_buildMedicalRecords = null;
 				_buildPoRecords = null;
-				_buildPrescripRecords = null;
 				_buildPriceRecords = null;
 				_buildProblemRecords = null;
 				_buildQuotailRecords = null;
@@ -278,12 +274,6 @@ namespace CarsonDBTest
 		{
 			LoadDll();
 			_buildPoRecords();
-		}
-
-		public static void BuildPrescripRecords()
-		{
-			LoadDll();
-			_buildPrescripRecords();
 		}
 
 		public static void BuildPriceRecords()

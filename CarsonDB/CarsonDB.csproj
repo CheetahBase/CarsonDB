@@ -84,7 +84,6 @@
     <Compile Include="Lab.cs" />
     <Compile Include="Medical.cs" />
     <Compile Include="Po.cs" />
-    <Compile Include="Prescrip.cs" />
     <Compile Include="Price.cs" />
     <Compile Include="Problem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

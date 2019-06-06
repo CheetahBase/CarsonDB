@@ -85,7 +85,6 @@ namespace CarsonDB
 		Treatment,
 		User,
 		Medical,
-		Prescrip,
 		MiscDirect = 1000
 	}
 
