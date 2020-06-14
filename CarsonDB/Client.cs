@@ -38,7 +38,8 @@ namespace CarsonDB
 			ClientEmail,
 			ClientCounty,
 			ClientFolder,
-			ClientCell
+			ClientCell,
+			ClientBalance
 		}
 
 		public static class ClientFields
@@ -70,6 +71,7 @@ namespace CarsonDB
 			public const string ClientCounty = "CLIENT_COUNTY";
 			public const string ClientFolder = "CLIENT_FOLDER";
 			public const string ClientCell = "CLIENT_CELL";
+			public const string ClientBalance = "CLIENT_BALANCE";
 		}
 
 		public class ClientData : ICrc
@@ -311,6 +313,13 @@ namespace CarsonDB
 				}
 			}
 
+			public decimal ClientBalance
+			{
+				get
+				{
+					return this._client.SignedImpliedDecimalFieldValue(ClientFieldOrdinals.ClientBalance, this._recordNumber);
+				}
+			}
 
 			[System.ComponentModel.DefaultValue(RecordStatus.None)]
 			public RecordStatus RecordState
@@ -364,6 +373,7 @@ namespace CarsonDB
 			this.AddFieldDefinition(ClientFields.ClientCounty, ClientFieldOrdinals.ClientCounty, AVImarkDataType.AVImarkDynamicString);
 			this.AddFieldDefinition(ClientFields.ClientFolder, ClientFieldOrdinals.ClientFolder, AVImarkDataType.AVImarkWord);
 			this.AddFieldDefinition(ClientFields.ClientCell, ClientFieldOrdinals.ClientCell, AVImarkDataType.AVImarkLinkToPhrase);
+			this.AddFieldDefinition(ClientFields.ClientCell, ClientFieldOrdinals.ClientCell, AVImarkDataType.AVImarkSignedImpliedDecimal);
 		}
 
 		public List<ClientData> ClientList()
